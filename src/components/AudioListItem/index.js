@@ -1,4 +1,8 @@
 import React from "react";
+import { MaterialIcons } from "@expo/vector-icons";
+import { RFValue } from "react-native-responsive-fontsize";
+
+import theme from "../../global/theme";
 
 import {
   Container,
@@ -13,11 +17,33 @@ import {
   IconOptions,
 } from "./styles";
 
+const renderPlayPauseIcon = (isPlaying) => {
+  if (!isPlaying) {
+    return (
+      <MaterialIcons
+        name="play-arrow"
+        size={RFValue(40)}
+        color={theme.colors.shape}
+      />
+    );
+  } else {
+    return (
+      <MaterialIcons
+        name="pause"
+        size={RFValue(40)}
+        color={theme.colors.secundary}
+      />
+    );
+  }
+};
+
 export function AudioListItem({
   filename,
   duration,
   onOptionPress,
   onAudioPress,
+  isPlaying,
+  activeListItem,
 }) {
   const getThumbnailText = (filename) => {
     return filename[0];
@@ -46,8 +72,18 @@ export function AudioListItem({
     <>
       <Container>
         <ContainerLeft onPress={onAudioPress}>
-          <Thumbnail>
-            <ThumbnailText>{getThumbnailText(filename)}</ThumbnailText>
+          <Thumbnail
+            backgroundthumbnail={isPlaying}
+            activeListItemProps={activeListItem}
+          >
+            <ThumbnailText
+              tumbnailTextColor={isPlaying}
+              activeListItemProps={activeListItem}
+            >
+              {activeListItem
+                ? renderPlayPauseIcon(isPlaying)
+                : getThumbnailText(filename)}
+            </ThumbnailText>
           </Thumbnail>
 
           <ContainerTitle>

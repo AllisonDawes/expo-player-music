@@ -2,6 +2,7 @@ import React, { Component, createContext } from "react";
 import { View, Text, Alert } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import { DataProvider } from "recyclerlistview";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AudioContext = createContext();
 
@@ -15,7 +16,12 @@ class AudioProvider extends Component {
       playbackObj: null,
       soundObj: null,
       currentAudio: {},
+      isPlaying: false,
+      currentAudioIndex: null,
+      playbackPosition: null,
+      playbackDuration: null,
     };
+    this.totalAudioCount = 0;
   }
 
   permissionAlert = () => {
@@ -41,6 +47,8 @@ class AudioProvider extends Component {
       first: media.totalCount,
     });
 
+    this.totalAudioCount = media.totalCount;
+
     this.setState({
       ...this.state,
       dataProvider: dataProvider.cloneWithRows([
@@ -49,6 +57,24 @@ class AudioProvider extends Component {
       ]),
       audioFiles: [...audioFiles, ...media.assets],
     });
+  };
+
+  loadPreviousAudio = async () => {
+    // TODO: we need to load audio from our async storage.
+    let previousAudio = await AsyncStorage.getItem("previousAudio");
+    let currentAudio;
+    let currentAudioIndex;
+
+    if (previousAudio === null) {
+      currentAudio = this.state.audioFiles[0];
+      currentAudioIndex = 0;
+    } else {
+      previousAudio = JSON.parse(previousAudio);
+      currentAudio = previousAudio.audio;
+      currentAudioIndex = previousAudio.index;
+    }
+
+    this.setState({ ...this.state, currentAudio, currentAudioIndex });
   };
 
   getPermission = async () => {
@@ -109,6 +135,10 @@ class AudioProvider extends Component {
       playbackObj,
       soundObj,
       currentAudio,
+      isPlaying,
+      currentAudioIndex,
+      playbackPosition,
+      playbackDuration,
     } = this.state;
 
     if (permissionError)
@@ -130,7 +160,13 @@ class AudioProvider extends Component {
           playbackObj,
           soundObj,
           currentAudio,
+          isPlaying,
+          currentAudioIndex,
+          playbackPosition,
+          playbackDuration,
           updateState: this.updateState,
+          totalAudioCount: this.totalAudioCount,
+          loadPreviousAudio: this.loadPreviousAudio,
         }}
       >
         {this.props.children}

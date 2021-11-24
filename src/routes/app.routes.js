@@ -34,7 +34,7 @@ export function AppRoutes() {
         options={{
           tabBarIcon: ({ color, size }) => {
             return (
-              <FontAwesome5 name="compact-disc" size={size} color={color} />
+              <MaterialIcons name="queue-music" size={size} color={color} />
             );
           },
         }}

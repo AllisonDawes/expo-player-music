@@ -1,4 +1,4 @@
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 import { Entypo } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 
@@ -24,7 +24,17 @@ export const ContainerLeft = styled.TouchableOpacity.attrs({
 export const Thumbnail = styled.View`
   width: ${RFValue(60)}px;
   height: ${RFValue(60)}px;
-  background: ${theme.colors.secundary};
+
+  ${(props) =>
+    props.activeListItemProps && props.backgroundthumbnail
+      ? css`
+          background: ${theme.colors.shape};
+          border: 2px solid ${theme.colors.secundary_medium};
+        `
+      : css`
+          background: ${theme.colors.secundary};
+        `}
+
   border-radius: 10px;
 
   align-items: center;
@@ -33,8 +43,8 @@ export const Thumbnail = styled.View`
 
 export const ThumbnailText = styled.Text`
   font-family: ${theme.fonts.medium};
-  color: ${theme.colors.shape};
   font-size: ${RFValue(28)}px;
+  color: ${theme.colors.shape};
 `;
 
 export const ContainerTitle = styled.View`
