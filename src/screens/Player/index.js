@@ -5,6 +5,7 @@ import Slider from "@react-native-community/slider";
 import { PlayerButton } from "../../components/PlayerButton";
 
 import { AudioContext } from "../../context/AudioProvider";
+import { play, pause, resume } from "../../global/audioController";
 
 import {
   BackgroundScreen,
@@ -31,6 +32,42 @@ export function Player() {
     }
 
     return 0;
+  };
+
+  const handlePlayPause = async () => {
+    // play
+    if (context.soundObj === null) {
+      const audio = context.currentAudio;
+
+      const status = await play(context.playbackObj, audio.uri);
+
+      return context.updateState(context, {
+        soundObj: status,
+        currentAudio: audio,
+        isPlaying: true,
+        currentAudioIndex: context.currentAudioIndex,
+      });
+    }
+
+    // pause
+    if (context.soundObj && context.soundObj.isPlaying) {
+      const status = await pause(context.playbackObj);
+
+      return context.updateState(context, {
+        soundObj: status,
+        isPlaying: false,
+      });
+    }
+
+    // resume
+    if (context.soundObj && !context.soundObj.isPlaying) {
+      const status = await resume(context.playbackObj);
+
+      return context.updateState(context, {
+        soundObj: status,
+        isPlaying: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -70,7 +107,7 @@ export function Player() {
           <PlayerButton iconType="PREV" size={40} />
 
           <PlayerButton
-            onPress={() => console.log("Play")}
+            onPress={handlePlayPause}
             iconType={context.isPlaying ? "PLAY" : "PAUSE"}
             size={60}
           />
