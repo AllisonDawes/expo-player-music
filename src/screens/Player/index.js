@@ -2,10 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { Dimensions } from "react-native";
 import Slider from "@react-native-community/slider";
 
+import { storeAudioForNextOpening } from "../../global/helper";
+
 import { PlayerButton } from "../../components/PlayerButton";
 
 import { AudioContext } from "../../context/AudioProvider";
-import { play, pause, resume } from "../../global/audioController";
+import { play, pause, resume, playNext } from "../../global/audioController";
 
 import {
   BackgroundScreen,
@@ -70,6 +72,87 @@ export function Player() {
     }
   };
 
+  const handlePrevious = async () => {
+    const { isLoaded } = await context.playbackObj.getStatusAsync();
+
+    const isFirstAudio = context.currentAudioIndex <= 0;
+
+    let audio = context.audioFiles[context.currentAudioIndex - 1];
+    let index;
+    let status;
+
+    if (!isLoaded && !isFirstAudio) {
+      index = context.currentAudioIndex + 1;
+      status = await play(context.playbackObj, audio.uri);
+    }
+
+    if (isLoaded && !isFirstAudio) {
+      index = context.currentAudioIndex + 1;
+      status = await playNext(context.playbackObj, audio.uri);
+    }
+
+    if (isFirstAudio) {
+      index = context.totalAudioCount - 1;
+      audio = context.audioFiles[index];
+      if (isLoaded) {
+        status = await playNext(context.playbackObj, audio.uri);
+      } else {
+        status = await play(context.playbackObj, audio.uri);
+      }
+    }
+
+    context.updateState(context, {
+      currentAudio: audio,
+      playbackObj: context.playbackObj,
+      soundObj: status,
+      isPlaying: true,
+      currentAudioIndex: index,
+    });
+
+    storeAudioForNextOpening(audio, index);
+  };
+
+  const handleNext = async () => {
+    const { isLoaded } = await context.playbackObj.getStatusAsync();
+
+    const isLastAudio =
+      context.currentAudioIndex + 1 === context.totalAudioCount;
+
+    let audio = context.audioFiles[context.currentAudioIndex + 1];
+    let index;
+    let status;
+
+    if (!isLoaded && !isLastAudio) {
+      index = context.currentAudioIndex + 1;
+      status = await play(context.playbackObj, audio.uri);
+    }
+
+    if (isLoaded && !isLastAudio) {
+      index = context.currentAudioIndex + 1;
+      status = await playNext(context.playbackObj, audio.uri);
+    }
+
+    if (isLastAudio) {
+      index = 0;
+      audio = context.audioFiles[index];
+      if (isLoaded) {
+        status = await playNext(context.playbackObj, audio.uri);
+      } else {
+        status = await play(context.playbackObj, audio.uri);
+      }
+    }
+
+    context.updateState(context, {
+      currentAudio: audio,
+      playbackObj: context.playbackObj,
+      soundObj: status,
+      isPlaying: true,
+      currentAudioIndex: index,
+    });
+
+    storeAudioForNextOpening(audio, index);
+  };
+
   useEffect(() => {
     context.loadPreviousAudio();
   }, []);
@@ -104,7 +187,7 @@ export function Player() {
         </ContainerTimer>
 
         <ContainerButtonPlayer>
-          <PlayerButton iconType="PREV" size={40} />
+          <PlayerButton iconType="PREV" size={40} onPress={handlePrevious} />
 
           <PlayerButton
             onPress={handlePlayPause}
@@ -112,7 +195,7 @@ export function Player() {
             size={60}
           />
 
-          <PlayerButton iconType="NEXT" size={40} />
+          <PlayerButton iconType="NEXT" size={40} onPress={handleNext} />
         </ContainerButtonPlayer>
       </Container>
     </BackgroundScreen>
