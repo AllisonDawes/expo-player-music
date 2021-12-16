@@ -15,7 +15,7 @@ export function PlayerButton({
       case "PLAY":
         return "pausecircle";
       case "PAUSE":
-        return "playcircleo";
+        return "play";
       case "NEXT":
         return "forward";
       case "PREV":

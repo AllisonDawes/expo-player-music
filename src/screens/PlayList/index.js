@@ -1,12 +1,28 @@
 import React from "react";
-import { Text } from "react-native";
 
-import { Container } from "./styles";
+import {
+  BackgroundScreen,
+  Container,
+  ButtonPlayList,
+  MyFavorite,
+  NumberSongs,
+  ButtonNewPlayList,
+  TextNewPlayList,
+} from "./styles";
 
 export function PlayList() {
   return (
-    <Container>
-      <Text>PlayList</Text>
-    </Container>
+    <BackgroundScreen>
+      <Container>
+        <ButtonPlayList onPress={() => {}}>
+          <MyFavorite>PlayList</MyFavorite>
+          <NumberSongs>0 Songs</NumberSongs>
+        </ButtonPlayList>
+
+        <ButtonNewPlayList onPress={() => {}}>
+          <TextNewPlayList>+ Add Nova PlayList</TextNewPlayList>
+        </ButtonNewPlayList>
+      </Container>
+    </BackgroundScreen>
   );
 }

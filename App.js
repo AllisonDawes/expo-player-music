@@ -2,10 +2,18 @@ import "react-native-gesture-handler";
 
 import React from "react";
 import { StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 
 import theme from "./src/global/theme";
+
+//const MyTheme = {
+//  ...DefaultTheme,
+//  colors: {
+//    ...DefaultTheme.colors,
+//    background: theme.colors.secundary,
+//  },
+//};
 
 import AudioProvider from "./src/context/AudioProvider";
 

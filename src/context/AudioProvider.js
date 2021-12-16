@@ -5,6 +5,9 @@ import { DataProvider } from "recyclerlistview";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Audio } from "expo-av";
 
+import { storeAudioForNextOpening } from "../global/helper";
+import { playNext } from "../global/audioController";
+
 export const AudioContext = createContext();
 
 class AudioProvider extends Component {
@@ -120,6 +123,50 @@ class AudioProvider extends Component {
     }
   };
 
+  onPlaybackStatusUpdate = async (playbackStatus) => {
+    if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+      this.updateState(this, {
+        playbackPosition: playbackStatus.positionMillis,
+        playbackDuration: playbackStatus.durationMillis,
+      });
+    }
+
+    // Play next audio after finalized current audio:
+    if (playbackStatus.didJustFinish) {
+      const nextAudioIndex = this.state.currentAudioIndex + 1;
+
+      if (nextAudioIndex >= this.totalAudioCount) {
+        this.state.playbackObj.unloadAsync();
+
+        this.updateState(this, {
+          soundObj: null,
+          currentAudio: this.state.audioFiles[0],
+          isPlaying: false,
+          currentAudioIndex: 0,
+          playbackPosition: null,
+          playbackDuration: null,
+        });
+
+        return storeAudioForNextOpening(this.state.audioFiles[0], 0);
+      }
+
+      const audio = this.state.audioFiles[nextAudioIndex];
+
+      const status = await playNext(this.state.playbackObj, audio.uri);
+
+      this.updateState(this, {
+        soundObj: status,
+        currentAudio: audio,
+        isPlaying: true,
+        currentAudioIndex: nextAudioIndex,
+        playbackPosition: null,
+        playbackDuration: null,
+      });
+
+      storeAudioForNextOpening(audio, nextAudioIndex);
+    }
+  };
+
   componentDidMount() {
     this.getPermission();
 
@@ -172,6 +219,7 @@ class AudioProvider extends Component {
           updateState: this.updateState,
           totalAudioCount: this.totalAudioCount,
           loadPreviousAudio: this.loadPreviousAudio,
+          onPlaybackStatusUpdate: this.onPlaybackStatusUpdate,
         }}
       >
         {this.props.children}
