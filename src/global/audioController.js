@@ -38,3 +38,7 @@ export const playNext = async (playbackObj, uri) => {
     console.log("error inside playNext helper method", err.mesage);
   }
 };
+
+export const selectAudio = () => {
+  //parei no video 26 - aos 02:44 min
+};

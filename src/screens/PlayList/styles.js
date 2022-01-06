@@ -16,6 +16,8 @@ export const ButtonPlayList = styled.TouchableOpacity.attrs({
   padding: 10px;
   background: ${theme.colors.secundary};
   border-radius: 5px;
+
+  margin-bottom: 10px;
 `;
 
 export const MyFavorite = styled.Text`

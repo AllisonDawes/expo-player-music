@@ -14,7 +14,7 @@ import { Screen } from "../../components/Screen";
 import { Header } from "../../components/Header";
 import { OptionModal } from "../../components/OptionModal";
 
-import { BackgroundScreen, Container, Separator } from "./styles";
+import { BackgroundScreen, Container } from "./styles";
 
 export class AudioList extends Component {
   static contextType = AudioContext;
@@ -199,6 +199,15 @@ export class AudioList extends Component {
                   <OptionModal
                     onPlayPress={() => console.log("Playing")}
                     onPlayListPress={() => {
+                      this.context.updateState(this.context, {
+                        addToPlayList: this.currentItem,
+                      });
+
+                      this.setState({
+                        ...this.state,
+                        optionModalVisible: false,
+                      });
+
                       this.props.navigation.navigate("PlayList");
                     }}
                     currentItem={this.currentItem}
