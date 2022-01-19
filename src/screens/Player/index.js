@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { Dimensions } from "react-native";
 import Slider from "@react-native-community/slider";
 
-import { storeAudioForNextOpening } from "../../global/helper";
+import { convertTime } from "../../global/helper";
 
 import { PlayerButton } from "../../components/PlayerButton";
 
 import { AudioContext } from "../../context/AudioProvider";
-import { play, pause, resume, playNext } from "../../global/audioController";
+import { selectAudio, changeAudio } from "../../global/audioController";
 
 import {
   BackgroundScreen,
@@ -37,128 +37,19 @@ export function Player() {
   };
 
   const handlePlayPause = async () => {
-    // play
-    if (context.soundObj === null) {
-      const audio = context.currentAudio;
-
-      const status = await play(context.playbackObj, audio.uri);
-
-      context.playbackObj.setOnPlaybackStatusUpdate(
-        context.onPlaybackStatusUpdate
-      );
-
-      return context.updateState(context, {
-        soundObj: status,
-        currentAudio: audio,
-        isPlaying: true,
-        currentAudioIndex: context.currentAudioIndex,
-      });
-    }
-
-    // pause
-    if (context.soundObj && context.soundObj.isPlaying) {
-      const status = await pause(context.playbackObj);
-
-      return context.updateState(context, {
-        soundObj: status,
-        isPlaying: false,
-      });
-    }
-
-    // resume
-    if (context.soundObj && !context.soundObj.isPlaying) {
-      const status = await resume(context.playbackObj);
-
-      return context.updateState(context, {
-        soundObj: status,
-        isPlaying: true,
-      });
-    }
+    await selectAudio(context.currentAudio, context);
   };
 
   const handlePrevious = async () => {
-    const { isLoaded } = await context.playbackObj.getStatusAsync();
-
-    const isFirstAudio = context.currentAudioIndex <= 0;
-
-    let audio = context.audioFiles[context.currentAudioIndex - 1];
-    let index;
-    let status;
-
-    if (!isLoaded && !isFirstAudio) {
-      index = context.currentAudioIndex + 1;
-      status = await play(context.playbackObj, audio.uri);
-    }
-
-    if (isLoaded && !isFirstAudio) {
-      index = context.currentAudioIndex - 1;
-      status = await playNext(context.playbackObj, audio.uri);
-    }
-
-    if (isFirstAudio) {
-      index = context.totalAudioCount - 1;
-      audio = context.audioFiles[index];
-      if (isLoaded) {
-        status = await playNext(context.playbackObj, audio.uri);
-      } else {
-        status = await play(context.playbackObj, audio.uri);
-      }
-    }
-
-    context.updateState(context, {
-      currentAudio: audio,
-      playbackObj: context.playbackObj,
-      soundObj: status,
-      isPlaying: true,
-      currentAudioIndex: index,
-      playbackPosition: null,
-      playbackDuration: null,
-    });
-
-    storeAudioForNextOpening(audio, index);
+    await changeAudio(context, "previous");
   };
 
   const handleNext = async () => {
-    const { isLoaded } = await context.playbackObj.getStatusAsync();
+    await changeAudio(context, "next");
+  };
 
-    const isLastAudio =
-      context.currentAudioIndex + 1 === context.totalAudioCount;
-
-    let audio = context.audioFiles[context.currentAudioIndex + 1];
-    let index;
-    let status;
-
-    if (!isLoaded && !isLastAudio) {
-      index = context.currentAudioIndex + 1;
-      status = await play(context.playbackObj, audio.uri);
-    }
-
-    if (isLoaded && !isLastAudio) {
-      index = context.currentAudioIndex + 1;
-      status = await playNext(context.playbackObj, audio.uri);
-    }
-
-    if (isLastAudio) {
-      index = 0;
-      audio = context.audioFiles[index];
-      if (isLoaded) {
-        status = await playNext(context.playbackObj, audio.uri);
-      } else {
-        status = await play(context.playbackObj, audio.uri);
-      }
-    }
-
-    context.updateState(context, {
-      currentAudio: audio,
-      playbackObj: context.playbackObj,
-      soundObj: status,
-      isPlaying: true,
-      currentAudioIndex: index,
-      playbackPosition: null,
-      playbackDuration: null,
-    });
-
-    storeAudioForNextOpening(audio, index);
+  const renderCurrentTime = () => {
+    return convertTime(context.playbackPosition / 1000);
   };
 
   useEffect(() => {
@@ -190,9 +81,12 @@ export function Player() {
         />
 
         <ContainerTimer>
-          <Timer>01:20</Timer>
-          <Timer>01:20</Timer>
+          <Timer>{convertTime(context.currentAudio.duration)}</Timer>
+          <Timer>{renderCurrentTime()}</Timer>
         </ContainerTimer>
+        {/**
+         * parei no video 28 aos 3:51 - Problema ao atualizar o time da musica.
+         */}
 
         <ContainerButtonPlayer>
           <PlayerButton iconType="PREV" size={40} onPress={handlePrevious} />

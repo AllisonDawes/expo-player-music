@@ -7,7 +7,13 @@ import { Audio } from "expo-av";
 import { AudioContext } from "../../context/AudioProvider";
 import { storeAudioForNextOpening } from "../../global/helper";
 
-import { play, pause, resume, playNext } from "../../global/audioController";
+import {
+  play,
+  pause,
+  resume,
+  playNext,
+  selectAudio,
+} from "../../global/audioController";
 
 import { AudioListItem } from "../../components/AudioListItem";
 import { Screen } from "../../components/Screen";
@@ -80,71 +86,73 @@ export class AudioList extends Component {
   //};
 
   handleAudioPress = async (audio) => {
+    await selectAudio(audio, this.context);
+
     //Playing audio for the first time:
-    const { playbackObj, soundObj, currentAudio, updateState, audioFiles } =
-      this.context;
-
-    if (soundObj === null) {
-      const playbackObj = new Audio.Sound();
-
-      const status = await play(playbackObj, audio.uri);
-
-      const index = audioFiles.indexOf(audio);
-
-      updateState(this.context, {
-        currentAudio: audio,
-        playbackObj: playbackObj,
-        soundObj: status,
-        isPlaying: true,
-        currentAudioIndex: index,
-      });
-
-      playbackObj.setOnPlaybackStatusUpdate(
-        this.context.onPlaybackStatusUpdate
-      );
-
-      return storeAudioForNextOpening(audio, index);
-    }
-
-    //Select another audio for the first time:
-    if (soundObj.isLoaded && currentAudio.id !== audio.id) {
-      const status = await playNext(playbackObj, audio.uri);
-
-      const index = audioFiles.indexOf(audio);
-
-      updateState(this.context, {
-        currentAudio: audio,
-        soundObj: status,
-        isPlaying: true,
-        currentAudioIndex: index,
-      });
-
-      return storeAudioForNextOpening(audio, index);
-    }
-
-    //Pause audio:
-    if (soundObj.isLoaded && soundObj.isPlaying) {
-      const status = await pause(playbackObj);
-
-      return updateState(this.context, {
-        soundObj: status,
-        isPlaying: false,
-      });
-    }
-
-    //resume audio:
-    if (
-      soundObj.isLoaded &&
-      !soundObj.isPlaying &&
-      currentAudio.id === audio.id
-    ) {
-      const status = await resume(playbackObj);
-
-      return updateState(this.context, {
-        soundObj: status,
-        isPlaying: true,
-      });
-    }
+    //const { playbackObj, soundObj, currentAudio, updateState, audioFiles } =
+    //  this.context;
+    //
+    //if (soundObj === null) {
+    //  const playbackObj = new Audio.Sound();
+    //
+    //  const status = await play(playbackObj, audio.uri);
+    //
+    //  const index = audioFiles.indexOf(audio);
+    //
+    //  updateState(this.context, {
+    //    currentAudio: audio,
+    //    playbackObj: playbackObj,
+    //    soundObj: status,
+    //    isPlaying: true,
+    //    currentAudioIndex: index,
+    //  });
+    //
+    //  playbackObj.setOnPlaybackStatusUpdate(
+    //    this.context.onPlaybackStatusUpdate
+    //  );
+    //
+    //  return storeAudioForNextOpening(audio, index);
+    //}
+    //
+    ////Select another audio for the first time:
+    //if (soundObj.isLoaded && currentAudio.id !== audio.id) {
+    //  const status = await playNext(playbackObj, audio.uri);
+    //
+    //  const index = audioFiles.indexOf(audio);
+    //
+    //  updateState(this.context, {
+    //    currentAudio: audio,
+    //    soundObj: status,
+    //    isPlaying: true,
+    //    currentAudioIndex: index,
+    //  });
+    //
+    //  return storeAudioForNextOpening(audio, index);
+    //}
+    //
+    ////Pause audio:
+    //if (soundObj.isLoaded && soundObj.isPlaying) {
+    //  const status = await pause(playbackObj);
+    //
+    //  return updateState(this.context, {
+    //    soundObj: status,
+    //    isPlaying: false,
+    //  });
+    //}
+    //
+    ////resume audio:
+    //if (
+    //  soundObj.isLoaded &&
+    //  !soundObj.isPlaying &&
+    //  currentAudio.id === audio.id
+    //) {
+    //  const status = await resume(playbackObj);
+    //
+    //  return updateState(this.context, {
+    //    soundObj: status,
+    //    isPlaying: true,
+    //  });
+    //}
   };
 
   scrollViewWithHeader = React.forwardRef(({ children, ...props }, ref) => {
