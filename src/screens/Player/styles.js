@@ -43,6 +43,10 @@ export const IconPhotoSound = styled(MaterialIcons)`
   color: ${theme.colors.secundary_light};
 `;
 
+export const ContainerTitle = styled.View`
+  height: ${RFValue(50)}px;
+`;
+
 export const Title = styled.Text`
   font-family: ${theme.fonts.bold};
   color: ${theme.colors.shape};

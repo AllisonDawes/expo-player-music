@@ -15,6 +15,7 @@ import {
   AudioCountText,
   PhotoSound,
   IconPhotoSound,
+  ContainerTitle,
   Title,
   ContainerTimer,
   Timer,
@@ -69,7 +70,9 @@ export function Player() {
           <IconPhotoSound name="library-music" />
         </PhotoSound>
 
-        <Title>{context.currentAudio.filename}</Title>
+        <ContainerTitle>
+          <Title numberOfLines={1}>{context.currentAudio.filename}</Title>
+        </ContainerTitle>
 
         <Slider
           style={{ width: width - 60, height: 40 }}
@@ -85,7 +88,7 @@ export function Player() {
           <Timer>{renderCurrentTime()}</Timer>
         </ContainerTimer>
         {/**
-         * parei no video 28 aos 3:51 - Problema ao atualizar o time da musica.
+         * parei no video 28 aos 3:51.
          */}
 
         <ContainerButtonPlayer>
