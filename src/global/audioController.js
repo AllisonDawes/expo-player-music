@@ -3,7 +3,10 @@ import { storeAudioForNextOpening } from "./helper";
 // Play Audio
 export const play = async (playbackObj, uri) => {
   try {
-    return await playbackObj.loadAsync({ uri }, { shouldPlay: true });
+    return await playbackObj.loadAsync(
+      { uri },
+      { shouldPlay: true, progressUpdateIntervalMillis: 1000 }
+    );
   } catch (err) {
     console.log("error inside play helper method", err.mesage);
   }
@@ -86,12 +89,17 @@ export const selectAudio = async (audio, context) => {
     }
 
     //Pause audio:
-    if (soundObj.isLoaded && soundObj.isPlaying) {
+    if (
+      soundObj.isLoaded &&
+      soundObj.isPlaying &&
+      currentAudio.id === audio.id
+    ) {
       const status = await pause(playbackObj);
 
       return updateState(context, {
         soundObj: status,
         isPlaying: false,
+        playbackPosition: status.positionMillis,
       });
     }
 
@@ -194,5 +202,26 @@ export const changeAudio = async (context, select) => {
     storeAudioForNextOpening(audio, index);
   } catch (err) {
     console.log("error inside change audio method.", err.message);
+  }
+};
+
+export const moveAudio = async (context, value) => {
+  const { soundObj, isPlaying, playbackObj, updateState } = context;
+
+  if (soundObj === null || !isPlaying) return;
+
+  try {
+    const status = await playbackObj.setPositionAsync(
+      Math.floor(soundObj.durationMillis * value)
+    );
+
+    updateState(context, {
+      soundObj: status,
+      playbackPosition: status.positionMillis,
+    });
+
+    await resume(playbackObj);
+  } catch (err) {
+    console.log("error inside onSlidingComplete callback", err);
   }
 };

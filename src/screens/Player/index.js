@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import Slider from "@react-native-community/slider";
 
@@ -7,7 +7,13 @@ import { convertTime } from "../../global/helper";
 import { PlayerButton } from "../../components/PlayerButton";
 
 import { AudioContext } from "../../context/AudioProvider";
-import { selectAudio, changeAudio } from "../../global/audioController";
+import {
+  selectAudio,
+  changeAudio,
+  pause,
+  resume,
+  moveAudio,
+} from "../../global/audioController";
 
 import {
   BackgroundScreen,
@@ -28,6 +34,8 @@ export function Player() {
   const context = useContext(AudioContext);
 
   const { playbackPosition, playbackDuration } = context;
+
+  const [currentPosition, setCurrentPosition] = useState(0);
 
   const calculatorSeebBar = () => {
     if (playbackPosition !== null && playbackDuration !== null) {
@@ -81,15 +89,32 @@ export function Player() {
           value={calculatorSeebBar()}
           minimumTrackTintColor="#ccc"
           maximumTrackTintColor="#fff "
+          onValueChange={(value) => {
+            setCurrentPosition(
+              convertTime(value * context.currentAudio.duration)
+            );
+          }}
+          onSlidingStart={async () => {
+            if (!context.isPLaying) return;
+
+            try {
+              await pause(context.playbackObj);
+            } catch (err) {
+              console.log("error inside onSlidingStart callback", err);
+            }
+          }}
+          onSlidingComplete={async (value) => {
+            await moveAudio(context, value);
+            setCurrentPosition(0);
+          }}
         />
 
         <ContainerTimer>
           <Timer>{convertTime(context.currentAudio.duration)}</Timer>
-          <Timer>{renderCurrentTime()}</Timer>
+          <Timer>
+            {currentPosition ? currentPosition : renderCurrentTime()}
+          </Timer>
         </ContainerTimer>
-        {/**
-         * parei no video 28 aos 3:51.
-         */}
 
         <ContainerButtonPlayer>
           <PlayerButton iconType="PREV" size={40} onPress={handlePrevious} />
