@@ -19,7 +19,7 @@ import {
 
 let selectedPlayList = {};
 
-export function PlayList() {
+export function PlayList({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [showPlayList, setShowPlayList] = useState(false);
 
@@ -123,7 +123,8 @@ export function PlayList() {
 
     // if there is no audio selected then we want open the list.
     selectedPlayList = playList;
-    setShowPlayList(true);
+    // setShowPlayList(true);
+    navigation.navigate("PlayListDetail", playList);
   };
 
   useEffect(() => {

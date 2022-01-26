@@ -1,18 +1,30 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import theme from "../global/theme";
 
-import { Player } from "../screens/Player";
 import { AudioList } from "../screens/AudioList";
+import { Player } from "../screens/Player";
 import { PlayList } from "../screens/PlayList";
+import { PlayListDetail } from "../screens/PlayListDetail";
 
-const { Navigator, Screen } = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-export function AppRoutes() {
+const PlayListScreen = () => {
   return (
-    <Navigator
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="PlayList" component={PlayList} />
+      <Stack.Screen name="PlayListDetail" component={PlayListDetail} />
+    </Stack.Navigator>
+  );
+};
+
+const AppNavigator = () => {
+  return (
+    <Tab.Navigator
       tabBarOptions={{
         activeTintColor: theme.colors.primary_light,
         inactiveTintColor: theme.colors.secundary_light,
@@ -28,41 +40,35 @@ export function AppRoutes() {
         },
       }}
     >
-      <Screen
+      <Tab.Screen
         name="AudioList"
         component={AudioList}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <MaterialIcons name="queue-music" size={size} color={color} />
-            );
-          },
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="queue-music" size={size} color={color} />
+          ),
         }}
       />
-
-      <Screen
+      <Tab.Screen
         name="Player"
         component={Player}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <MaterialIcons name="speaker-group" size={size} color={color} />
-            );
-          },
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="speaker-group" size={size} color={color} />
+          ),
         }}
       />
-
-      <Screen
+      <Tab.Screen
         name="PlayList"
-        component={PlayList}
+        component={PlayListScreen}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <MaterialIcons name="library-music" size={size} color={color} />
-            );
-          },
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="library-music" size={size} color={color} />
+          ),
         }}
       />
-    </Navigator>
+    </Tab.Navigator>
   );
-}
+};
+
+export default AppNavigator;

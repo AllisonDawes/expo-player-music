@@ -1,8 +1,10 @@
-import React from "react";
-import { Modal, FlatList } from "react-native";
+import React, { useContext } from "react";
+import { FlatList } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
 import { AudioListItem } from "../../components/AudioListItem";
 
+import { AudioContext } from "../../context/AudioProvider";
 import { selectAudio } from "../../global/audioController";
 
 import {
@@ -13,13 +15,18 @@ import {
   Title,
 } from "./styles";
 
-export function PlayListDetail({ visible, playList, onClose }) {
+export function PlayListDetail(onClose) {
+  const context = useContext(AudioContext);
+
+  const route = useRoute();
+  const playList = route.params;
+
   const playAudio = (audio) => {
-    //selectAudio(audio, )
+    selectAudio(audio, context);
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <>
       <Container>
         <Title>{playList.title}</Title>
 
@@ -41,6 +48,10 @@ export function PlayListDetail({ visible, playList, onClose }) {
       <ButtonModalBG onPress={onClose}>
         <ContainerModalBG />
       </ButtonModalBG>
-    </Modal>
+    </>
   );
 }
+
+/**
+ * Parei no video 30 aos 8:33
+ */

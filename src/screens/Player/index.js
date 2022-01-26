@@ -109,6 +109,10 @@ export function Player() {
           }}
         />
 
+        {/**
+         * Parado no video 30
+         */}
+
         <ContainerTimer>
           <Timer>{convertTime(context.currentAudio.duration)}</Timer>
           <Timer>

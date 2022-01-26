@@ -24,7 +24,7 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 
-import { AppRoutes } from "./src/routes/app.routes";
+import AppNavigator from "./src/routes/app.routes";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -44,7 +44,7 @@ export default function App() {
           barStyle="light-content"
           backgroundColor={theme.colors.secundary}
         />
-        <AppRoutes />
+        <AppNavigator />
       </NavigationContainer>
     </AudioProvider>
   );
