@@ -13,8 +13,8 @@ export const Container = styled.View`
 `;
 
 export const LogoImage = styled.Image`
-  width: ${RFValue(130)}px;
-  height: ${RFValue(25)}px;
+  width: ${RFValue(110)}px;
+  height: ${RFValue(30)}px;
 `;
 
 export const TitleHeader = styled.Text`

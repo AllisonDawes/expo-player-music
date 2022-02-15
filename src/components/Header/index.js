@@ -1,6 +1,6 @@
 import React from "react";
 
-import logo from "../../assets/logo-dwsplayer.png";
+import logo from "../../assets/logo-dwsplayer2.png";
 
 import { Container, LogoImage, TitleHeader } from "./styles";
 
