@@ -7,13 +7,7 @@ import { AudioListItem } from "../../components/AudioListItem";
 import { AudioContext } from "../../context/AudioProvider";
 import { selectAudio } from "../../global/audioController";
 
-import {
-  Container,
-  ButtonModalBG,
-  ContainerModalBG,
-  ListContainer,
-  Title,
-} from "./styles";
+import { Container, ListContainer, Title } from "./styles";
 
 export function PlayListDetail(onClose) {
   const context = useContext(AudioContext);
@@ -21,34 +15,33 @@ export function PlayListDetail(onClose) {
   const route = useRoute();
   const playList = route.params;
 
-  const playAudio = (audio) => {
-    selectAudio(audio, context);
+  const playAudio = async (audio) => {
+    await selectAudio(audio, context, {
+      activePlayList: playList,
+      isPlayListRunning: true,
+    });
   };
 
   return (
-    <>
-      <Container>
-        <Title>{playList.title}</Title>
+    <Container>
+      <Title>{playList.title}</Title>
 
-        <FlatList
-          data={playList.audios}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <ListContainer>
-              <AudioListItem
-                filename={item.filename}
-                duration={item.duration}
-                onAudioPress={() => playAudio(item)}
-              />
-            </ListContainer>
-          )}
-        />
-      </Container>
-
-      <ButtonModalBG onPress={onClose}>
-        <ContainerModalBG />
-      </ButtonModalBG>
-    </>
+      <FlatList
+        data={playList.audios}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ListContainer>
+            <AudioListItem
+              filename={item.filename}
+              duration={item.duration}
+              isPlaying={context.isPlaying}
+              activeListItem={item.id === context.currentAudio.id}
+              onAudioPress={() => playAudio(item)}
+            />
+          </ListContainer>
+        )}
+      />
+    </Container>
   );
 }
 

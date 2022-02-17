@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Alert, FlatList } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { PlayListInputModal } from "../../components/PlayListInputModal";
@@ -10,11 +11,12 @@ import { AudioContext } from "../../context/AudioProvider";
 import {
   BackgroundScreen,
   Container,
+  ButtonNewPlayList,
+  ContainerLeftAddPlaylist,
+  TextNewPlayList,
   ButtonPlayList,
   MyFavorite,
   NumberSongs,
-  ButtonNewPlayList,
-  TextNewPlayList,
 } from "./styles";
 
 let selectedPlayList = {};
@@ -137,6 +139,13 @@ export function PlayList({ navigation }) {
     <>
       <BackgroundScreen>
         <Container>
+          <ButtonNewPlayList onPress={() => setModalVisible(true)}>
+            <ContainerLeftAddPlaylist>
+              <Feather name="plus" size={26} color="#fff" />
+            </ContainerLeftAddPlaylist>
+            <TextNewPlayList>Add Nova PlayList</TextNewPlayList>
+          </ButtonNewPlayList>
+
           {playList.length ? (
             <FlatList
               data={playList}
@@ -153,10 +162,6 @@ export function PlayList({ navigation }) {
               )}
             />
           ) : null}
-
-          <ButtonNewPlayList onPress={() => setModalVisible(true)}>
-            <TextNewPlayList>+ Add Nova PlayList</TextNewPlayList>
-          </ButtonNewPlayList>
 
           <PlayListInputModal
             visible={modalVisible}

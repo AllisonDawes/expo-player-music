@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Modal } from "react-native";
 
+import theme from "../../global/theme";
+
 import {
   ContainerModal,
   InputContainer,
   Title,
   TextInputModal,
-  Icon,
+  ButtonCreatePlalist,
+  TitleButton,
   ButtonCloseModal,
   ContainerButtonCloseModal,
 } from "./styles";
@@ -34,11 +37,14 @@ export function PlayListInputModal({ visible, onClose, onSubmit }) {
             autoCorrect={false}
             autoCapitalize="words"
             placeholder="Insira o nome da PlayList ..."
+            placeholderTextColor="#999"
             value={playListName}
             onChangeText={(text) => setPlayListName(text)}
           />
 
-          <Icon name="check" onPress={handleOnSubmit} />
+          <ButtonCreatePlalist onPress={handleOnSubmit}>
+            <TitleButton>Criar</TitleButton>
+          </ButtonCreatePlalist>
         </InputContainer>
       </ContainerModal>
 

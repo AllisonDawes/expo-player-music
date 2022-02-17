@@ -8,22 +8,35 @@ import theme from "../../global/theme";
 
 export const BackgroundScreen = styled(Background)``;
 
-export const Container = styled.View`
-  flex: 1;
-  padding: 0 40px 0;
-  padding-top: ${RFValue(80)}px;
+export const ContainerInfoHeader = styled.View`
+  width: 80%;
+  margin-top: ${RFValue(20)}px;
 
-  align-items: center;
+  align-self: center;
 `;
 
 export const AudioCountText = styled.Text`
-  position: absolute;
-  left: ${RFValue(35)}px;
-  top: 20px;
-
   font-family: ${theme.fonts.regular};
   font-size: ${RFValue(12)}px;
   color: ${theme.colors.primary_light};
+`;
+
+export const ContainerTitlePlayList = styled.View``;
+
+export const TitlePlayList = styled.Text`
+  font-family: ${theme.fonts.bold};
+  font-size: ${RFValue(14)}px;
+  color: ${theme.colors.primary_light};
+
+  align-self: center;
+`;
+
+export const Container = styled.View`
+  flex: 1;
+  padding: 0 40px 0;
+  padding-top: ${RFValue(20)}px;
+
+  align-items: center;
 `;
 
 export const PhotoSound = styled.View`

@@ -44,7 +44,7 @@ export const playNext = async (playbackObj, uri) => {
   }
 };
 
-export const selectAudio = async (audio, context) => {
+export const selectAudio = async (audio, context, playListInfo = {}) => {
   const {
     playbackObj,
     soundObj,
@@ -58,13 +58,16 @@ export const selectAudio = async (audio, context) => {
     if (soundObj === null) {
       const status = await play(playbackObj, audio.uri);
 
-      const index = audioFiles.indexOf(audio);
+      const index = audioFiles.findIndex(({ id }) => id === audio.id);
 
       updateState(context, {
         currentAudio: audio,
         soundObj: status,
         isPlaying: true,
         currentAudioIndex: index,
+        isPlayListRunning: false,
+        activePlayList: [],
+        ...playListInfo,
       });
 
       playbackObj.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
@@ -76,13 +79,16 @@ export const selectAudio = async (audio, context) => {
     if (soundObj.isLoaded && currentAudio.id !== audio.id) {
       const status = await playNext(playbackObj, audio.uri);
 
-      const index = audioFiles.indexOf(audio);
+      const index = audioFiles.findIndex(({ id }) => id === audio.id);
 
       updateState(context, {
         currentAudio: audio,
         soundObj: status,
         isPlaying: true,
         currentAudioIndex: index,
+        isPlayListRunning: false,
+        activePlayList: [],
+        ...playListInfo,
       });
 
       return storeAudioForNextOpening(audio, index);

@@ -19,8 +19,8 @@ export const InputContainer = styled.View`
   width: 80%;
   height: ${RFValue(150)}px;
   border-radius: 10px;
-  padding: 10px 0;
-  background: ${theme.colors.shape};
+  padding: 10px;
+  background: ${theme.colors.secundary_medium};
   z-index: 1000;
 
   justify-content: space-around;
@@ -28,9 +28,9 @@ export const InputContainer = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: ${theme.fonts.medium};
+  font-family: ${theme.fonts.bold};
   font-size: ${RFValue(14)}px;
-  color: ${theme.colors.secundary_light};
+  color: ${theme.colors.primary_medium};
 `;
 
 export const TextInputModal = styled.TextInput`
@@ -39,14 +39,25 @@ export const TextInputModal = styled.TextInput`
   border-bottom-color: ${theme.colors.primary_medium};
   font-size: ${RFValue(16)}px;
   font-family: ${theme.fonts.medium};
+  color: ${theme.colors.text};
   padding: 0 5px;
+  margin-bottom: 15px;
 `;
 
-export const Icon = styled(AntDesign)`
-  font-size: ${RFValue(24)}px;
-  padding: 10px 0 0;
-  color: ${theme.colors.primary};
-  border-radius: 50px;
+export const ButtonCreatePlalist = styled.TouchableOpacity`
+  width: 80%;
+  background: ${theme.colors.primary};
+  border-radius: 4px;
+  padding: 10px;
+
+  align-items: center;
+  justify-content: center;
+`;
+
+export const TitleButton = styled.Text`
+  font-family: ${theme.fonts.bold};
+  font-size: ${RFValue(16)}px;
+  color: ${theme.colors.shape};
 `;
 
 export const ButtonCloseModal = styled.TouchableWithoutFeedback``;

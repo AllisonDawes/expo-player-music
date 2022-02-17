@@ -11,12 +11,14 @@ import {
   selectAudio,
   changeAudio,
   pause,
-  resume,
   moveAudio,
 } from "../../global/audioController";
 
 import {
   BackgroundScreen,
+  ContainerInfoHeader,
+  ContainerTitlePlayList,
+  TitlePlayList,
   Container,
   AudioCountText,
   PhotoSound,
@@ -69,9 +71,17 @@ export function Player() {
 
   return (
     <BackgroundScreen>
-      <AudioCountText>{`${context.currentAudioIndex + 1}/${
-        context.totalAudioCount
-      }`}</AudioCountText>
+      <ContainerInfoHeader>
+        <AudioCountText>{`${context.currentAudioIndex + 1}/${
+          context.totalAudioCount
+        }`}</AudioCountText>
+
+        <ContainerTitlePlayList>
+          {context.isPlayListRunning && (
+            <TitlePlayList>{context.activePlayList.title}</TitlePlayList>
+          )}
+        </ContainerTitlePlayList>
+      </ContainerInfoHeader>
 
       <Container>
         <PhotoSound>
@@ -108,10 +118,6 @@ export function Player() {
             setCurrentPosition(0);
           }}
         />
-
-        {/**
-         * Parado no video 30
-         */}
 
         <ContainerTimer>
           <Timer>{convertTime(context.currentAudio.duration)}</Timer>
