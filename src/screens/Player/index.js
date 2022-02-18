@@ -35,13 +35,17 @@ export function Player() {
 
   const context = useContext(AudioContext);
 
-  const { playbackPosition, playbackDuration } = context;
+  const { playbackPosition, playbackDuration, currentAudio } = context;
 
   const [currentPosition, setCurrentPosition] = useState(0);
 
   const calculatorSeebBar = () => {
     if (playbackPosition !== null && playbackDuration !== null) {
       return playbackPosition / playbackDuration;
+    }
+
+    if (currentAudio.lastPosition) {
+      return currentPosition / (currentAudio.duration * 1000);
     }
 
     return 0;
@@ -60,6 +64,10 @@ export function Player() {
   };
 
   const renderCurrentTime = () => {
+    if (context.soundObj && currentAudio.lastPosition) {
+      return convertTime(currentAudio.lastPosition / 1000);
+    }
+
     return convertTime(context.playbackPosition / 1000);
   };
 

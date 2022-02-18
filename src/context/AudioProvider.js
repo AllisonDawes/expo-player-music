@@ -135,6 +135,14 @@ class AudioProvider extends Component {
       });
     }
 
+    if (playbackStatus.isLoaded && !playbackStatus.isPlaying) {
+      storeAudioForNextOpening(
+        this.state.currentAudio,
+        this.state.currentAudioIndex,
+        playbackStatus.positionMillis
+      );
+    }
+
     // Play next audio after finalized current audio:
     if (playbackStatus.didJustFinish) {
       if (this.state.isPlayListRunning) {
