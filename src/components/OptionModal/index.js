@@ -18,6 +18,7 @@ import {
 export function OptionModal({
   visible,
   onClose,
+  options,
   currentItem,
   onPlayPress,
   onPlayListPress,
@@ -31,13 +32,21 @@ export function OptionModal({
         <HeaderModal>
           <Filename numberOfLines={2}>{filename}</Filename>
           <Content>
-            <ButtonPlay onPress={onPlayPress}>
+            {options.map((option) => {
+              return (
+                <ButtonPlay key={option.title} onPress={option.onPress}>
+                  <ButtonPlayText>{option.title}</ButtonPlayText>
+                </ButtonPlay>
+              );
+            })}
+
+            {/*<ButtonPlay onPress={onPlayPress}>
               <ButtonPlayText>Play</ButtonPlayText>
             </ButtonPlay>
 
             <ButtonAddPlayList onPress={onPlayListPress}>
               <ButtonAddPlayListText>Add to PlayList</ButtonAddPlayListText>
-            </ButtonAddPlayList>
+            </ButtonAddPlayList>*/}
           </Content>
         </HeaderModal>
         <ButtonCloseModal onPress={onClose}>

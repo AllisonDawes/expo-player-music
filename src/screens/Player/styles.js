@@ -27,14 +27,15 @@ export const TitlePlayList = styled.Text`
   font-family: ${theme.fonts.bold};
   font-size: ${RFValue(14)}px;
   color: ${theme.colors.primary_light};
+  margin-top: ${RFValue(5)}px;
 
-  align-self: center;
+  align-self: flex-start;
 `;
 
 export const Container = styled.View`
   flex: 1;
   padding: 0 40px 0;
-  padding-top: ${RFValue(20)}px;
+  padding-top: ${RFValue(10)}px;
 
   align-items: center;
 `;
@@ -45,7 +46,7 @@ export const PhotoSound = styled.View`
   height: ${RFValue(310)}px;
   border-radius: 20px;
 
-  margin-bottom: ${RFValue(30)}px;
+  margin-bottom: ${RFValue(20)}px;
 
   align-items: center;
   justify-content: center;
@@ -65,7 +66,7 @@ export const Title = styled.Text`
   color: ${theme.colors.shape};
   font-size: ${RFValue(16)}px;
 
-  margin-bottom: ${RFValue(15)}px;
+  margin-bottom: ${RFValue(10)}px;
 `;
 
 export const ContainerTimer = styled.View`

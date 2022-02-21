@@ -86,7 +86,9 @@ export function Player() {
 
         <ContainerTitlePlayList>
           {context.isPlayListRunning && (
-            <TitlePlayList>{context.activePlayList.title}</TitlePlayList>
+            <TitlePlayList>
+              Playlist: {context.activePlayList.title}
+            </TitlePlayList>
           )}
         </ContainerTitlePlayList>
       </ContainerInfoHeader>
