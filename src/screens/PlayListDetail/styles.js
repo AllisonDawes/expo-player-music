@@ -4,8 +4,9 @@ import { RFValue } from "react-native-responsive-fontsize";
 import theme from "../../global/theme";
 
 export const Container = styled.View`
+  flex: 1;
   background: ${theme.colors.secundary_medium};
-  align-self: center;
+
   padding: 20px 10px;
 `;
 
@@ -17,4 +18,16 @@ export const Title = styled.Text`
   margin-bottom: 10px;
 `;
 
-export const ListContainer = styled.View``;
+export const ListContainer = styled.View`
+  flex: 1;
+
+  margin-top: ${RFValue(30)}px;
+`;
+
+export const NoMusiclistText = styled.Text`
+  font-family: ${theme.fonts.bold};
+  font-size: ${RFValue(22)}px;
+  color: ${theme.colors.secundary_light};
+
+  align-self: center;
+`;

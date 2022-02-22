@@ -43,116 +43,8 @@ export class AudioList extends Component {
     }
   );
 
-  //onPlaybackStatusUpdate = async (playbackStatus) => {
-  //  if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
-  //    this.context.updateState(this.context, {
-  //      playbackPosition: playbackStatus.positionMillis,
-  //      playbackDuration: playbackStatus.durationMillis,
-  //    });
-  //  }
-  //
-  //  // Play next audio after finalized current audio:
-  //  if (playbackStatus.didJustFinish) {
-  //    const nextAudioIndex = this.context.currentAudioIndex + 1;
-  //
-  //    if (nextAudioIndex >= this.context.totalAudioCount) {
-  //      this.context.playbackObj.unloadAsync();
-  //
-  //      this.context.updateState(this.context, {
-  //        soundObj: null,
-  //        currentAudio: this.context.audioFiles[0],
-  //        isPlaying: false,
-  //        currentAudioIndex: 0,
-  //        playbackPosition: null,
-  //        playbackDuration: null,
-  //      });
-  //
-  //      return storeAudioForNextOpening(this.context.audioFiles[0], 0);
-  //    }
-  //
-  //    const audio = this.context.audioFiles[nextAudioIndex];
-  //
-  //    const status = await playNext(this.context.playbackObj, audio.uri);
-  //
-  //    this.context.updateState(this.context, {
-  //      soundObj: status,
-  //      currentAudio: audio,
-  //      isPlaying: true,
-  //      currentAudioIndex: nextAudioIndex,
-  //    });
-  //
-  //    storeAudioForNextOpening(audio, nextAudioIndex);
-  //  }
-  //};
-
   handleAudioPress = async (audio) => {
     await selectAudio(audio, this.context);
-
-    //Playing audio for the first time:
-    //const { playbackObj, soundObj, currentAudio, updateState, audioFiles } =
-    //  this.context;
-    //
-    //if (soundObj === null) {
-    //  const playbackObj = new Audio.Sound();
-    //
-    //  const status = await play(playbackObj, audio.uri);
-    //
-    //  const index = audioFiles.indexOf(audio);
-    //
-    //  updateState(this.context, {
-    //    currentAudio: audio,
-    //    playbackObj: playbackObj,
-    //    soundObj: status,
-    //    isPlaying: true,
-    //    currentAudioIndex: index,
-    //  });
-    //
-    //  playbackObj.setOnPlaybackStatusUpdate(
-    //    this.context.onPlaybackStatusUpdate
-    //  );
-    //
-    //  return storeAudioForNextOpening(audio, index);
-    //}
-    //
-    ////Select another audio for the first time:
-    //if (soundObj.isLoaded && currentAudio.id !== audio.id) {
-    //  const status = await playNext(playbackObj, audio.uri);
-    //
-    //  const index = audioFiles.indexOf(audio);
-    //
-    //  updateState(this.context, {
-    //    currentAudio: audio,
-    //    soundObj: status,
-    //    isPlaying: true,
-    //    currentAudioIndex: index,
-    //  });
-    //
-    //  return storeAudioForNextOpening(audio, index);
-    //}
-    //
-    ////Pause audio:
-    //if (soundObj.isLoaded && soundObj.isPlaying) {
-    //  const status = await pause(playbackObj);
-    //
-    //  return updateState(this.context, {
-    //    soundObj: status,
-    //    isPlaying: false,
-    //  });
-    //}
-    //
-    ////resume audio:
-    //if (
-    //  soundObj.isLoaded &&
-    //  !soundObj.isPlaying &&
-    //  currentAudio.id === audio.id
-    //) {
-    //  const status = await resume(playbackObj);
-    //
-    //  return updateState(this.context, {
-    //    soundObj: status,
-    //    isPlaying: true,
-    //  });
-    //}
   };
 
   scrollViewWithHeader = React.forwardRef(({ children, ...props }, ref) => {
@@ -213,8 +105,8 @@ export class AudioList extends Component {
                   />
 
                   <OptionModal
-                    onPlayPress={() => console.log("Playing")}
-                    /*onPlayListPress={() => {
+                    /*onPlayPress={() => console.log("Playing")}
+                    onPlayListPress={() => {
                       this.context.updateState(this.context, {
                         addToPlayList: this.currentItem,
                       });

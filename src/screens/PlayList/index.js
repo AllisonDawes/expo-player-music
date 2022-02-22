@@ -179,5 +179,3 @@ export function PlayList({ navigation }) {
     </>
   );
 }
-
-//parado na aulda 24.

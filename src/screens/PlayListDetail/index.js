@@ -9,7 +9,7 @@ import { OptionModal } from "../../components/OptionModal";
 import { AudioContext } from "../../context/AudioProvider";
 import { selectAudio } from "../../global/audioController";
 
-import { Container, ListContainer, Title } from "./styles";
+import { Container, ListContainer, Title, NoMusiclistText } from "./styles";
 
 export function PlayListDetail(onClose) {
   const context = useContext(AudioContext);
@@ -34,13 +34,34 @@ export function PlayListDetail(onClose) {
   };
 
   const removeAudio = async () => {
+    let isPlaying = context.isPlaying;
+    let isPlayListRunning = context.isPlayListRunning;
+    let soundObj = context.soundObj;
+    let playbackPosition = context.playbackPosition;
+    let activePlayList = context.activePlayList;
+
+    if (
+      context.isPlayListRunning &&
+      context.currentAudio.id === selectedItem.id
+    ) {
+      // stop
+      await context.playbackObj.stopAsync();
+      await context.playbackObj.unloadAsync();
+
+      isPlaying = false;
+      isPlayListRunning = false;
+      soundObj = null;
+      playbackPosition = 0;
+      activePlayList = [];
+    }
+
     const newAudios = audios.filter((audio) => audio.id !== selectedItem.id);
 
     const result = await AsyncStorage.getItem("playlist");
 
     if (result !== null) {
-      const oldPlaylist = JSON.parse(result);
-      const updatedPlayList = oldPlaylist.filter((item) => {
+      const oldPlaylists = JSON.parse(result);
+      const updatedPlayLists = oldPlaylists.filter((item) => {
         if (item.id === playList.id) {
           item.audios = newAudios;
         }
@@ -48,9 +69,16 @@ export function PlayListDetail(onClose) {
         return item;
       });
 
-      AsyncStorage.setItem("playlist", JSON.stringify(updatedPlayList));
+      AsyncStorage.setItem("playlist", JSON.stringify(updatedPlayLists));
 
-      context.updateState(context, { playlist: updatedPlayList });
+      context.updateState(context, {
+        playList: updatedPlayLists,
+        isPlayListRunning,
+        activePlayList,
+        playbackPosition,
+        isPlaying,
+        soundObj,
+      });
     }
 
     setAudios(newAudios);
@@ -63,25 +91,32 @@ export function PlayListDetail(onClose) {
       <Container>
         <Title>{playList.title}</Title>
 
-        <FlatList
-          data={audios}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <ListContainer>
-              <AudioListItem
-                filename={item.filename}
-                duration={item.duration}
-                isPlaying={context.isPlaying}
-                activeListItem={item.id === context.currentAudio.id}
-                onAudioPress={() => playAudio(item)}
-                onOptionPress={() => {
-                  setSelectedItem(item);
-                  setModalVisible(true);
-                }}
-              />
-            </ListContainer>
-          )}
-        />
+        {audios.length ? (
+          <FlatList
+            data={audios}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <ListContainer>
+                <AudioListItem
+                  filename={item.filename}
+                  duration={item.duration}
+                  isPlaying={context.isPlaying}
+                  activeListItem={item.id === context.currentAudio.id}
+                  onAudioPress={() => playAudio(item)}
+                  onOptionPress={() => {
+                    setSelectedItem(item);
+                    setModalVisible(true);
+                  }}
+                />
+              </ListContainer>
+            )}
+          />
+        ) : (
+          <ListContainer>
+            <NoMusiclistText>Nenhuma</NoMusiclistText>
+            <NoMusiclistText>música encontrada!</NoMusiclistText>
+          </ListContainer>
+        )}
       </Container>
 
       <OptionModal
