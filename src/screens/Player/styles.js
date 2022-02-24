@@ -92,3 +92,14 @@ export const ContainerButtonPlayer = styled.View`
   align-items: center;
   justify-content: space-around;
 `;
+
+export const ContainerPlay = styled.View`
+  height: 80px;
+  width: 80px;
+  background: ${theme.colors.primary_medium};
+  padding-left: 2px;
+  border-radius: 40px;
+
+  align-items: center;
+  justify-content: center;
+`;

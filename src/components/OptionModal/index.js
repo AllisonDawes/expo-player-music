@@ -9,20 +9,11 @@ import {
   Content,
   ButtonPlay,
   ButtonPlayText,
-  ButtonAddPlayList,
-  ButtonAddPlayListText,
   ButtonCloseModal,
   ModalBG,
 } from "./styles";
 
-export function OptionModal({
-  visible,
-  onClose,
-  options,
-  currentItem,
-  onPlayPress,
-  onPlayListPress,
-}) {
+export function OptionModal({ visible, onClose, options, currentItem }) {
   const { filename } = currentItem;
 
   return (
@@ -39,14 +30,6 @@ export function OptionModal({
                 </ButtonPlay>
               );
             })}
-
-            {/*<ButtonPlay onPress={onPlayPress}>
-              <ButtonPlayText>Play</ButtonPlayText>
-            </ButtonPlay>
-
-            <ButtonAddPlayList onPress={onPlayListPress}>
-              <ButtonAddPlayListText>Add to PlayList</ButtonAddPlayListText>
-            </ButtonAddPlayList>*/}
           </Content>
         </HeaderModal>
         <ButtonCloseModal onPress={onClose}>

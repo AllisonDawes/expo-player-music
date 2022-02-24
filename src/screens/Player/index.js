@@ -28,7 +28,9 @@ import {
   ContainerTimer,
   Timer,
   ContainerButtonPlayer,
+  ContainerPlay,
 } from "./styles";
+import theme from "../../global/theme";
 
 export function Player() {
   const { width } = Dimensions.get("window");
@@ -137,15 +139,28 @@ export function Player() {
         </ContainerTimer>
 
         <ContainerButtonPlayer>
-          <PlayerButton iconType="PREV" size={40} onPress={handlePrevious} />
-
           <PlayerButton
-            onPress={handlePlayPause}
-            iconType={context.isPlaying ? "PLAY" : "PAUSE"}
-            size={60}
+            iconType="PREV"
+            size={34}
+            iconColor={theme.colors.primary_medium}
+            onPress={handlePrevious}
           />
 
-          <PlayerButton iconType="NEXT" size={40} onPress={handleNext} />
+          <ContainerPlay>
+            <PlayerButton
+              onPress={handlePlayPause}
+              iconType={context.isPlaying ? "PLAY" : "PAUSE"}
+              iconColor={theme.colors.secundary_medium}
+              size={40}
+            />
+          </ContainerPlay>
+
+          <PlayerButton
+            iconType="NEXT"
+            size={34}
+            iconColor={theme.colors.primary_medium}
+            onPress={handleNext}
+          />
         </ContainerButtonPlayer>
       </Container>
     </BackgroundScreen>

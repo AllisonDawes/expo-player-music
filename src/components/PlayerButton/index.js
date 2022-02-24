@@ -3,23 +3,17 @@ import theme from "../../global/theme";
 
 import { Icon } from "./styles";
 
-export function PlayerButton({
-  iconType,
-  size,
-  iconColor = theme.colors.primary_light,
-  onPress,
-  ...rest
-}) {
+export function PlayerButton({ iconType, size, iconColor, onPress, ...rest }) {
   const getIconName = (type) => {
     switch (type) {
       case "PLAY":
-        return "pausecircle";
+        return "pause-sharp";
       case "PAUSE":
-        return "play";
+        return "play-sharp";
       case "NEXT":
-        return "forward";
+        return "play-skip-forward-sharp";
       case "PREV":
-        return "banckward";
+        return "play-skip-back-sharp";
       default:
         return;
     }

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { FlatList } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { FlatList, View, Alert } from "react-native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { AudioListItem } from "../../components/AudioListItem";
@@ -9,10 +9,22 @@ import { OptionModal } from "../../components/OptionModal";
 import { AudioContext } from "../../context/AudioProvider";
 import { selectAudio } from "../../global/audioController";
 
-import { Container, ListContainer, Title, NoMusiclistText } from "./styles";
+import {
+  Container,
+  ListContainer,
+  ContainerHeaderPlaylist,
+  ButtonDeletePlaylist,
+  IconButtonDelete,
+  Title,
+  NoMusiclistText,
+  ButtonToPlayList,
+  TextToPlayList,
+  IconToPlayList,
+} from "./styles";
 
-export function PlayListDetail(onClose) {
+export function PlayListDetail() {
   const context = useContext(AudioContext);
+  const navigation = useNavigation();
 
   const route = useRoute();
   const playList = route.params;
@@ -21,7 +33,7 @@ export function PlayListDetail(onClose) {
   const [selectedItem, setSelectedItem] = useState({});
   const [audios, setAudios] = useState(playList.audios);
 
-  const playAudio = async (audio) => {
+  const playAudio = async (props) => {
     await selectAudio(audio, context, {
       activePlayList: playList,
       isPlayListRunning: true,
@@ -86,10 +98,73 @@ export function PlayListDetail(onClose) {
     closeModal();
   };
 
+  const removePlaylist = async () => {
+    let isPlaying = context.isPlaying;
+    let isPlayListRunning = context.isPlayListRunning;
+    let soundObj = context.soundObj;
+    let playbackPosition = context.playbackPosition;
+    let activePlayList = context.activePlayList;
+
+    if (context.isPlayListRunning && activePlayList.id === playList.id) {
+      // stop
+      await context.playbackObj.stopAsync();
+      await context.playbackObj.unloadAsync();
+
+      isPlaying = false;
+      isPlayListRunning = false;
+      soundObj = null;
+      playbackPosition = 0;
+      activePlayList = [];
+    }
+
+    const result = await AsyncStorage.getItem("playlist");
+
+    if (result !== null) {
+      const oldPlaylists = JSON.parse(result);
+      const updatedPlayLists = oldPlaylists.filter(
+        (item) => item.id !== playList.id
+      );
+
+      AsyncStorage.setItem("playlist", JSON.stringify(updatedPlayLists));
+
+      context.updateState(context, {
+        playList: updatedPlayLists,
+        isPlayListRunning,
+        activePlayList,
+        playbackPosition,
+        isPlaying,
+        soundObj,
+      });
+    }
+
+    navigation.goBack();
+  };
+
+  const confirmDeletePlaylist = () => {
+    Alert.alert("Aviso!", "Deseja realmente deletar essa playlist?", [
+      {
+        text: "Cancelar",
+        onPress: () => {},
+      },
+      {
+        text: "Sim",
+        onPress: () => removePlaylist(),
+      },
+    ]);
+  };
+
   return (
     <>
       <Container>
-        <Title>{playList.title}</Title>
+        <ContainerHeaderPlaylist>
+          <View />
+
+          <Title>{playList.title}</Title>
+
+          <ButtonDeletePlaylist onPress={confirmDeletePlaylist}>
+            <IconButtonDelete name="trash-2" />
+          </ButtonDeletePlaylist>
+        </ContainerHeaderPlaylist>
 
         {audios.length ? (
           <FlatList
@@ -115,6 +190,11 @@ export function PlayListDetail(onClose) {
           <ListContainer>
             <NoMusiclistText>Nenhuma</NoMusiclistText>
             <NoMusiclistText>música encontrada!</NoMusiclistText>
+
+            <ButtonToPlayList onPress={() => navigation.navigate("AudioList")}>
+              <TextToPlayList>Ir para lista de musicas</TextToPlayList>
+              <IconToPlayList name="plus" />
+            </ButtonToPlayList>
           </ListContainer>
         )}
       </Container>

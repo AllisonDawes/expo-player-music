@@ -16,11 +16,11 @@ export const ContainerModal = styled.View`
 `;
 
 export const InputContainer = styled.View`
-  width: 80%;
+  width: 90%;
   height: ${RFValue(150)}px;
   border-radius: 10px;
   padding: 10px;
-  background: ${theme.colors.secundary_medium};
+  background: ${theme.colors.secundary};
   z-index: 1000;
 
   justify-content: space-around;
@@ -34,7 +34,7 @@ export const Title = styled.Text`
 `;
 
 export const TextInputModal = styled.TextInput`
-  width: 80%;
+  width: 90%;
   border-bottom-width: 1px;
   border-bottom-color: ${theme.colors.primary_medium};
   font-size: ${RFValue(16)}px;
@@ -45,7 +45,7 @@ export const TextInputModal = styled.TextInput`
 `;
 
 export const ButtonCreatePlalist = styled.TouchableOpacity`
-  width: 80%;
+  width: 90%;
   background: ${theme.colors.primary};
   border-radius: 4px;
   padding: 10px;

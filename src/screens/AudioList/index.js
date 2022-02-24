@@ -2,18 +2,10 @@ import React, { Component } from "react";
 import { Dimensions, ScrollView } from "react-native";
 import { RecyclerListView, LayoutProvider } from "recyclerlistview";
 import PropTypes from "prop-types";
-import { Audio } from "expo-av";
 
 import { AudioContext } from "../../context/AudioProvider";
-import { storeAudioForNextOpening } from "../../global/helper";
 
-import {
-  play,
-  pause,
-  resume,
-  playNext,
-  selectAudio,
-} from "../../global/audioController";
+import { selectAudio } from "../../global/audioController";
 
 import { AudioListItem } from "../../components/AudioListItem";
 import { Screen } from "../../components/Screen";
@@ -83,6 +75,7 @@ export class AudioList extends Component {
       addToPlayList: this.currentItem,
     });
 
+    this.state.optionModalVisible = false;
     this.props.navigation.navigate("PlayList");
   };
 
@@ -105,19 +98,6 @@ export class AudioList extends Component {
                   />
 
                   <OptionModal
-                    /*onPlayPress={() => console.log("Playing")}
-                    onPlayListPress={() => {
-                      this.context.updateState(this.context, {
-                        addToPlayList: this.currentItem,
-                      });
-
-                      this.setState({
-                        ...this.state,
-                        optionModalVisible: false,
-                      });
-
-                      this.props.navigation.navigate("PlayList");
-                    }}*/
                     options={[
                       {
                         title: "Add to playlist",
