@@ -1,12 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Dimensions } from "react-native";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import { Dimensions, Animated, SafeAreaView } from "react-native";
 import Slider from "@react-native-community/slider";
+
+import logo from "../../assets/background-player.png";
 
 import { convertTime } from "../../global/helper";
 
 import { PlayerButton } from "../../components/PlayerButton";
 
 import { AudioContext } from "../../context/AudioProvider";
+
 import {
   selectAudio,
   changeAudio,
@@ -35,11 +38,17 @@ import theme from "../../global/theme";
 export function Player() {
   const { width } = Dimensions.get("window");
 
+  const scrollX = useRef(new Animated.Value(0)).current;
+
   const context = useContext(AudioContext);
 
-  const { playbackPosition, playbackDuration, currentAudio } = context;
+  const { playbackPosition, playbackDuration, currentAudio, audioFiles } =
+    context;
 
   const [currentPosition, setCurrentPosition] = useState(0);
+  const [songIndex, setSongIndex] = useState(0);
+
+  const position = useRef(Animated.divide(scrollX, width)).current;
 
   const calculatorSeebBar = () => {
     if (playbackPosition !== null && playbackDuration !== null) {
@@ -75,7 +84,38 @@ export function Player() {
 
   useEffect(() => {
     context.loadPreviousAudio();
-  }, []);
+
+    scrollX.addListener(({ value }) => {
+      const val = Math.round(value / width);
+
+      setSongIndex(val);
+    });
+
+    return () => {
+      scrollX.removeAllListeners();
+    };
+  }, [scrollX]);
+
+  const renderItem = ({ index }) => {
+    return (
+      <Animated.View
+        style={{
+          alignItems: "center",
+          width: width,
+          transform: [
+            {
+              translateX: Animated.multiply(Animated.add(position, -index), 0),
+            },
+          ],
+        }}
+      >
+        <Animated.Image
+          source={logo}
+          style={{ width: 320, height: 320, borderRadius: 10 }}
+        />
+      </Animated.View>
+    );
+  };
 
   if (!context.currentAudio) return null;
 
@@ -96,9 +136,23 @@ export function Player() {
       </ContainerInfoHeader>
 
       <Container>
-        <PhotoSound>
-          <IconPhotoSound name="library-music" />
-        </PhotoSound>
+        <SafeAreaView style={{ height: 320 }}>
+          <Animated.FlatList
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={16}
+            data={audioFiles}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            onScroll={() => {
+              Animated.event(
+                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                { useNativeDriver: true }
+              );
+            }}
+          />
+        </SafeAreaView>
 
         <ContainerTitle>
           <Title numberOfLines={1}>{context.currentAudio.filename}</Title>
@@ -166,3 +220,10 @@ export function Player() {
     </BackgroundScreen>
   );
 }
+
+/**
+ * Carroucel em tela
+ * está faltando adicionar as funcionalidades
+ * de mudar musica ao mover o carroucel, e
+ * movimentar o carroucel ao mudar a musica pelo botão.
+ */

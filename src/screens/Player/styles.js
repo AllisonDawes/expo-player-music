@@ -1,10 +1,13 @@
 import styled from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
 
 import { Background } from "../../components/Background";
 
 import theme from "../../global/theme";
+
+const { width } = Dimensions.get("window");
 
 export const BackgroundScreen = styled(Background)``;
 
@@ -33,23 +36,19 @@ export const TitlePlayList = styled.Text`
 `;
 
 export const Container = styled.View`
-  flex: 1;
-  padding: 0 40px 0;
+  padding: 0 0px 0;
   padding-top: ${RFValue(10)}px;
+  max-height: ${RFValue(500)}px;
 
+  justify-content: space-evenly;
   align-items: center;
 `;
 
 export const PhotoSound = styled.View`
+  flex: 1;
+  width: ${width}px;
   background: ${theme.colors.secundary};
-  width: 100%;
-  height: ${RFValue(310)}px;
   border-radius: 20px;
-
-  margin-bottom: ${RFValue(20)}px;
-
-  align-items: center;
-  justify-content: center;
 `;
 
 export const IconPhotoSound = styled(MaterialIcons)`
@@ -71,7 +70,7 @@ export const Title = styled.Text`
 
 export const ContainerTimer = styled.View`
   width: 100%;
-  padding: 0px 5px;
+  padding: 0px 45px;
 
   flex-direction: row;
   justify-content: space-between;

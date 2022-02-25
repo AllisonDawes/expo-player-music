@@ -1,5 +1,4 @@
 import React from "react";
-import theme from "../../global/theme";
 
 import { Icon } from "./styles";
 
