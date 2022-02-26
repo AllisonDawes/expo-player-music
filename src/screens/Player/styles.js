@@ -32,7 +32,6 @@ export const TitlePlayList = styled.Text`
 `;
 
 export const Container = styled.View`
-  padding: 0 0px 0;
   padding-top: ${RFValue(10)}px;
   max-height: ${RFValue(500)}px;
 
@@ -40,7 +39,8 @@ export const Container = styled.View`
 `;
 
 export const ContainerTitle = styled.View`
-  margin-top: ${RFValue(20)}px;
+  margin-top: ${RFValue(30)}px;
+  max-width: 75%;
 `;
 
 export const Title = styled.Text`
@@ -53,7 +53,7 @@ export const Title = styled.Text`
 
 export const ContainerTimer = styled.View`
   width: 100%;
-  padding: 0px 45px;
+  padding: 0px ${RFValue(45)}px;
 
   flex-direction: row;
   justify-content: space-between;
@@ -61,7 +61,7 @@ export const ContainerTimer = styled.View`
 
 export const Timer = styled.Text`
   font-family: ${theme.fonts.regular};
-  color: ${theme.colors.text};
+  color: ${theme.colors.primary_medium};
   font-size: ${RFValue(12)}px;
 `;
 

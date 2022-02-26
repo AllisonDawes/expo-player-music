@@ -158,12 +158,12 @@ export function Player() {
         </ContainerTitle>
 
         <Slider
-          style={{ width: width - 60, height: 40, marginTop: 5 }}
+          style={{ width: width - 60, height: 40, marginTop: 10 }}
           minimumValue={0}
           maximumValue={1}
           value={calculatorSeebBar()}
-          minimumTrackTintColor="#ccc"
-          maximumTrackTintColor="#000"
+          minimumTrackTintColor="#2DEFCF"
+          maximumTrackTintColor="#2F3244"
           onValueChange={(value) => {
             setCurrentPosition(
               convertTime(value * context.currentAudio.duration)
@@ -203,7 +203,7 @@ export function Player() {
             onPress={handlePlayPause}
             iconType={context.isPlaying ? "PLAY" : "PAUSE"}
             iconColor={theme.colors.primary_light}
-            size={100}
+            size={80}
           />
 
           <PlayerButton
@@ -217,10 +217,3 @@ export function Player() {
     </BackgroundScreen>
   );
 }
-
-/**
- * Carroucel em tela
- * está faltando adicionar as funcionalidades
- * de mudar musica ao mover o carroucel, e
- * movimentar o carroucel ao mudar a musica pelo botão.
- */

@@ -209,6 +209,13 @@ class AudioProvider extends Component {
 
     if (this.state.playbackObj === null) {
       this.setState({ ...this.state, playbackObj: new Audio.Sound() });
+
+      Audio.setAudioModeAsync({
+        staysActiveInBackground: true,
+        shouldDuckAndroid: true,
+        interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+        playThroughEarpieceAndroid: false,
+      });
     }
   }
 
