@@ -33,7 +33,7 @@ export function PlayListDetail() {
   const [selectedItem, setSelectedItem] = useState({});
   const [audios, setAudios] = useState(playList.audios);
 
-  const playAudio = async (props) => {
+  const playAudio = async (audio) => {
     await selectAudio(audio, context, {
       activePlayList: playList,
       isPlayListRunning: true,

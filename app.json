@@ -2,14 +2,18 @@
   "expo": {
     "name": "expo-player-music-javascript",
     "slug": "expo-player-music-javascript",
+    "icon": "./assets/icon-dwsplayer.png",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "plugins": [
-      "expo-media-library",
-      "expo-av"
-    ]
+    "assetBundlePatterns": ["**/*"],
+    "plugins": ["expo-media-library", "expo-av"],
+    "android": {
+      "package": "com.dwsplayer",
+      "versionCode": 1
+    },
+    "ios": {
+      "bundleIdentifier": "com.dwsplayer",
+      "buildNumber": "1.0.0"
+    }
   },
   "name": "expo-player-music-javascript"
 }

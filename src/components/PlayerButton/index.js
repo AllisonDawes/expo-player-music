@@ -6,9 +6,9 @@ export function PlayerButton({ iconType, size, iconColor, onPress, ...rest }) {
   const getIconName = (type) => {
     switch (type) {
       case "PLAY":
-        return "pause-sharp";
+        return "pause-circle-sharp";
       case "PAUSE":
-        return "play-sharp";
+        return "play-circle-sharp";
       case "NEXT":
         return "play-skip-forward-sharp";
       case "PREV":

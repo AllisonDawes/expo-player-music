@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { Dimensions, Animated, SafeAreaView } from "react-native";
 import Slider from "@react-native-community/slider";
 
-import logo from "../../assets/background-player.png";
+import logo from "../../assets/image-music-player.png";
 
 import { convertTime } from "../../global/helper";
 
@@ -24,8 +24,6 @@ import {
   TitlePlayList,
   Container,
   AudioCountText,
-  PhotoSound,
-  IconPhotoSound,
   ContainerTitle,
   Title,
   ContainerTimer,
@@ -47,6 +45,7 @@ export function Player() {
 
   const [currentPosition, setCurrentPosition] = useState(0);
   const [songIndex, setSongIndex] = useState(0);
+  const [playSpacing, setPlaySpacing] = useState(true);
 
   const position = useRef(Animated.divide(scrollX, width)).current;
 
@@ -159,12 +158,12 @@ export function Player() {
         </ContainerTitle>
 
         <Slider
-          style={{ width: width - 60, height: 40 }}
+          style={{ width: width - 60, height: 40, marginTop: 5 }}
           minimumValue={0}
           maximumValue={1}
           value={calculatorSeebBar()}
           minimumTrackTintColor="#ccc"
-          maximumTrackTintColor="#fff "
+          maximumTrackTintColor="#000"
           onValueChange={(value) => {
             setCurrentPosition(
               convertTime(value * context.currentAudio.duration)
@@ -200,14 +199,12 @@ export function Player() {
             onPress={handlePrevious}
           />
 
-          <ContainerPlay>
-            <PlayerButton
-              onPress={handlePlayPause}
-              iconType={context.isPlaying ? "PLAY" : "PAUSE"}
-              iconColor={theme.colors.secundary_medium}
-              size={40}
-            />
-          </ContainerPlay>
+          <PlayerButton
+            onPress={handlePlayPause}
+            iconType={context.isPlaying ? "PLAY" : "PAUSE"}
+            iconColor={theme.colors.primary_light}
+            size={100}
+          />
 
           <PlayerButton
             iconType="NEXT"

@@ -1,19 +1,15 @@
 import styled from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Dimensions } from "react-native";
 
 import { Background } from "../../components/Background";
 
 import theme from "../../global/theme";
 
-const { width } = Dimensions.get("window");
-
 export const BackgroundScreen = styled(Background)``;
 
 export const ContainerInfoHeader = styled.View`
   width: 80%;
-  margin-top: ${RFValue(20)}px;
+  margin: ${RFValue(30)}px 0 ${RFValue(10)}px;
 
   align-self: center;
 `;
@@ -40,24 +36,11 @@ export const Container = styled.View`
   padding-top: ${RFValue(10)}px;
   max-height: ${RFValue(500)}px;
 
-  justify-content: space-evenly;
   align-items: center;
 `;
 
-export const PhotoSound = styled.View`
-  flex: 1;
-  width: ${width}px;
-  background: ${theme.colors.secundary};
-  border-radius: 20px;
-`;
-
-export const IconPhotoSound = styled(MaterialIcons)`
-  font-size: ${RFValue(180)}px;
-  color: ${theme.colors.secundary_light};
-`;
-
 export const ContainerTitle = styled.View`
-  height: ${RFValue(50)}px;
+  margin-top: ${RFValue(20)}px;
 `;
 
 export const Title = styled.Text`
@@ -84,20 +67,19 @@ export const Timer = styled.Text`
 
 export const ContainerButtonPlayer = styled.View`
   width: 100%;
-  margin-top: ${RFValue(5)}px;
-  padding: 10px;
+  padding: 5px 40px;
 
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
 `;
 
 export const ContainerPlay = styled.View`
-  height: 80px;
-  width: 80px;
-  background: ${theme.colors.primary_medium};
-  padding-left: 2px;
-  border-radius: 40px;
+  height: 100px;
+  width: 100px;
+  background: ${theme.colors.secundary_medium};
+
+  border-radius: 50px;
 
   align-items: center;
   justify-content: center;
